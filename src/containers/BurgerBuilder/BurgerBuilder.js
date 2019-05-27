@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Aux from '../../hoc/Auxiliary';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuidControls/BuildControls';
+import errorHandler from '../../hoc/withErrorHandler/ErrorHandler';
 import Modal from '../../components/UI/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -18,16 +19,20 @@ const INGREDIENT_PRICES = {
 
 class BurgerBuilder extends Component {
     state = {
-        ingredients: {
-            salad: 0,
-            bacon: 0,
-            cheese: 0,
-            meat: 0
-        },
+        ingredients: {},
         totalPrice: 4,
         purchasable: false,
         purchasing: false,
-        loading: false
+        loading: false,
+        error: null
+    }
+
+    componentDidMount() {
+        axios.get('https://burger-builder-584c7.firebaseio.com/ingredients.json').then(res => {
+            this.setState({ingredients: res.data});
+        }).catch(err => {
+            this.setState({error: true});
+        });
     }
 
     updatePurchaseState(ingredients) {
@@ -134,4 +139,4 @@ class BurgerBuilder extends Component {
     }
 }
 
-export default BurgerBuilder;
+export default errorHandler(BurgerBuilder, axios);
