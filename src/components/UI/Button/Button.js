@@ -4,8 +4,8 @@ import './Button.css';
 const button = (props) => (
     <button
         className='Button'
-        style={{color: props.btnType === 'Danger' ? '#944317' : '#5C9210'}}
-        onClick={props.clicked}    
+        style={{ color: props.btnType === 'Danger' ? '#944317' : '#5C9210' }}
+        onClick={props.clicked}
     >{props.children}</button>
 );
 

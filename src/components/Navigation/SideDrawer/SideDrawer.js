@@ -8,7 +8,7 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 
 const sideDrawer = (props) => {
     let attachedClasses = ['Open', 'Close'];
-    if(props.open) {
+    if (props.open) {
         attachedClasses = ['SideDrawer', 'Open'];
     }
     return (

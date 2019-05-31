@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './ContactData.css';
 
 import Button from '../../../components/UI/Button/Button';
@@ -13,7 +13,7 @@ class ContactData extends Component {
         }
     }
     render() {
-        return(
+        return (
             <div className="ContactData">
                 <h4>Enter Your Contact Data</h4>
                 <form>

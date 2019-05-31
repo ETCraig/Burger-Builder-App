@@ -3,7 +3,7 @@ import './Burger.css';
 
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const burger = (props) => {
     var transformedIngredients = Object.keys(props.ingredients).map(igKey => {
@@ -13,7 +13,7 @@ const burger = (props) => {
     }).reduce((arr, el) => {
         return arr.concat(el);
     }, []);
-    if(transformedIngredients.length === 0) {
+    if (transformedIngredients.length === 0) {
         transformedIngredients = <p>Please Start Adding Ingredients!</p>
     }
     return (
