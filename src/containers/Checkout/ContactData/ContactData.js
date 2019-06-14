@@ -9,8 +9,6 @@ import axios from '../../../axios-orders';
 
 class ContactData extends Component {
     state = {
-        ingredients: this.props.ingredients,
-        price: this.props.price,
         orderForm: {
             name: {
                 elementType: 'input',
@@ -87,7 +85,7 @@ class ContactData extends Component {
                         { value: 'cheapest', displayValue: 'Cheapest' }
                     ]
                 },
-                value: 'cheapest',
+                value: '',
                 validation: {},
                 valid: true
             }
@@ -117,25 +115,42 @@ class ContactData extends Component {
     checkValidity(value, rules) {
         let isValid = true;
 
+        if (!rules) {
+            return true;
+        }
+        
         if (rules.required) {
             isValid = value.trim() !== '' && isValid;
         }
+
         if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
+            isValid = value.length >= rules.minLength && isValid
         }
+
         if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
+            isValid = value.length <= rules.maxLength && isValid
         }
-        return isValid
+
+        if (rules.isEmail) {
+            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+            isValid = pattern.test(value) && isValid
+        }
+
+        if (rules.isNumeric) {
+            const pattern = /^\d+$/;
+            isValid = pattern.test(value) && isValid
+        }
+
+        return isValid;
     }
     inputChangedHandler = (e, inputIdentifier) => {
         const updatedOrderForm = { ...this.state.orderForm };
         const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
         updatedFormElement.value = e.target.value;
-        updatedFormElement.touched = true;
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedFormElement.touched = true;
         updatedOrderForm[inputIdentifier] = updatedFormElement;
-        const formIsValid = true;
+        let formIsValid = true;
         for(let inputIdentifier in updatedOrderForm) {
             formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
         }
@@ -155,7 +170,7 @@ class ContactData extends Component {
                     <Input
                         key={formElement.id}
                         elementType={formElement.config.elementType}
-                        elementConfig={formElements.config.elementConfig}
+                        elementConfig={formElement.config.elementConfig}
                         value={formElement.config.value}
                         invalid={!formElement.config.valid}
                         shouldValidate={formElement.config.validation}

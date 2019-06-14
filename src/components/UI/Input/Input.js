@@ -4,7 +4,7 @@ import './Input.css';
 const input = (props) => {
     const inputElement = null;
     const inputClasses = ['inputElement'];
-    if(props.invalid && props.shouldValidate && props.touched) {
+    if (props.invalid && props.shouldValidate && props.touched) {
         inputClasses.push('Invalid');
     }
 
@@ -26,16 +26,18 @@ const input = (props) => {
             />;
             break;
         case ('select'):
-            inputElement = <select
-                className={inputClasses.join(' ')}
-                onChange={props.changed}
-                value={props.value}>
-                {props.elementConfig.options.map(option => {
-                    <option key={option.value} value={option.value}>
-                        {option.displayValue}
-                    </option>
-                })}
-            </select>;
+            inputElement = (
+                <select
+                    className={inputClasses.join(' ')}
+                    onChange={props.changed}
+                    value={props.value}>
+                    {props.elementConfig.options.map(option => (
+                        <option key={option.value} value={option.value}>
+                            {option.displayValue}
+                        </option>
+                    ))}
+                </select>
+            );
             break;
         default:
             inputElement = <input
