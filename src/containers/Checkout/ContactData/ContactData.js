@@ -8,7 +8,7 @@ import withError from '../../../hoc/withErrorHandler/ErrorHandler';
 import * as actions from '../../../store/actions/Index';
 
 import axios from '../../../axios-orders';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 class ContactData extends Component {
     state = {
@@ -104,9 +104,10 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ings,
             price: this.props.price,
-            orderData: formData
+            orderData: formData,
+            userId: this.props.userId
         }
-        this.props.onOrderBurger(order);
+        this.props.onOrderBurger(order, this.props.token);
     }
     checkValidity(value, rules) {
         let isValid = true;
@@ -114,7 +115,7 @@ class ContactData extends Component {
         if (!rules) {
             return true;
         }
-        
+
         if (rules.required) {
             isValid = value.trim() !== '' && isValid;
         }
@@ -147,7 +148,7 @@ class ContactData extends Component {
         updatedFormElement.touched = true;
         updatedOrderForm[inputIdentifier] = updatedFormElement;
         let formIsValid = true;
-        for(let inputIdentifier in updatedOrderForm) {
+        for (let inputIdentifier in updatedOrderForm) {
             formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
         }
         this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
@@ -193,13 +194,15 @@ const mapStateToProps = state => {
     return {
         ings: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderBurger: (orderData) => dispatch(actions.purchaseBurger())
+        onOrderBurger: (orderData, token) => dispatch(actions.purchaseBurger(orderData, token))
     }
 }
 
